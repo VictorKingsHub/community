@@ -52,9 +52,8 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex items-center gap-8 text-gray-700 font-medium text-lg text-bold">
+        <ul className="hidden md:flex items-center gap-8 text-gray-700 font-medium text-lg">
           {navLinks.map((item) => {
-            // Dropdown items
             if (item.children) {
               return (
                 <li key={item.label}>
@@ -95,7 +94,6 @@ export default function Navbar() {
               );
             }
 
-            // Normal links
             return (
               <li key={item.label}>
                 <Link
@@ -136,54 +134,57 @@ export default function Navbar() {
                   <div key={item.label}>
                     
                     {/* Parent */}
-                    <button
-                      onClick={() =>
-                        item.children && toggleMenu(item.label)
-                      }
-                      className="flex items-center justify-between w-full font-semibold text-gray-800"
-                    >
-                      {item.href ? (
-                        <Link
-                          href={item.href}
-                          className={`${
-                            isActive(item.href)
-                              ? "text-green-700 font-semibold"
-                              : ""
-                          }`}
-                        >
-                          {item.label}
-                        </Link>
-                      ) : (
-                        item.label
-                      )}
-
-                      {item.children && (
-                        openMenu === item.label ? (
+                    {item.children ? (
+                      <button
+                        onClick={() => toggleMenu(item.label)}
+                        className="flex items-center justify-between w-full font-semibold text-gray-800 py-1"
+                      >
+                        <span>{item.label}</span>
+                        {openMenu === item.label ? (
                           <FiChevronUp />
                         ) : (
                           <FiChevronDown />
-                        )
-                      )}
-                    </button>
-
-                    {/* Children */}
-                    {item.children && openMenu === item.label && (
-                      <div className="ml-4 mt-3 flex flex-col gap-3">
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.label}
-                            href={child.href!}
-                            className={`${
-                              isActive(child.href)
-                                ? "text-green-700 font-semibold"
-                                : "text-gray-600 hover:text-green-700"
-                            }`}
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
+                        )}
+                      </button>
+                    ) : (
+                      <Link
+                        href={item.href!}
+                        className={`block py-1 font-semibold ${
+                          isActive(item.href)
+                            ? "text-green-700"
+                            : "text-gray-800 hover:text-green-700"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
                     )}
+
+                    {/* Children (Animated) */}
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                        openMenu === item.label
+                          ? "max-h-96 opacity-100 mt-3"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      {item.children && (
+                        <div className="ml-4 flex flex-col gap-3">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.label}
+                              href={child.href!}
+                              className={`${
+                                isActive(child.href)
+                                  ? "text-green-700 font-semibold"
+                                  : "text-gray-600 hover:text-green-700"
+                              }`}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
 
