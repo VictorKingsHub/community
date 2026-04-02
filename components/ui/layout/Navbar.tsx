@@ -8,13 +8,6 @@ import { navLinks } from "@/config/navLinks";
 
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-
-import {
   Sheet,
   SheetContent,
   SheetTrigger,
@@ -54,42 +47,23 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-8 text-gray-700 font-medium text-lg">
           {navLinks.map((item) => {
+            
+            // If it has children → just show parent link (no dropdown)
             if (item.children) {
               return (
                 <li key={item.label}>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className={`flex items-center gap-1 transition ${
-                          item.children.some((child) =>
-                            isActive(child.href)
-                          )
-                            ? "text-green-700 font-semibold"
-                            : "hover:text-green-700"
-                        }`}
-                      >
-                        {item.label}
-                        <FiChevronDown size={16} />
-                      </button>
-                    </DropdownMenuTrigger>
-
-                    <DropdownMenuContent className="w-52">
-                      {item.children.map((child) => (
-                        <DropdownMenuItem key={child.label} asChild>
-                          <Link
-                            href={child.href!}
-                            className={`w-full ${
-                              isActive(child.href)
-                                ? "text-green-700 font-semibold"
-                                : ""
-                            }`}
-                          >
-                            {child.label}
-                          </Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <Link
+                    href={item.href || "#"}
+                    className={`transition ${
+                      item.children.some((child) =>
+                        isActive(child.href)
+                      )
+                        ? "text-green-700 font-semibold"
+                        : "hover:text-green-700"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
                 </li>
               );
             }
@@ -121,7 +95,7 @@ export default function Navbar() {
         {/* Mobile Menu */}
         <div className="md:hidden">
           <Sheet>
-            <SheetTrigger asChild>
+            <SheetTrigger >
               <button>
                 <FiMenu size={24} />
               </button>
@@ -159,9 +133,9 @@ export default function Navbar() {
                       </Link>
                     )}
 
-                    {/* Children (Animated) */}
+                    {/* Children */}
                     <div
-                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      className={`overflow-hidden transition-all duration-300 ${
                         openMenu === item.label
                           ? "max-h-96 opacity-100 mt-3"
                           : "max-h-0 opacity-0"
@@ -173,7 +147,7 @@ export default function Navbar() {
                             <Link
                               key={child.label}
                               href={child.href!}
-                              className={`${
+                              className={`text-sm ${
                                 isActive(child.href)
                                   ? "text-green-700 font-semibold"
                                   : "text-gray-600 hover:text-green-700"
@@ -185,6 +159,7 @@ export default function Navbar() {
                         </div>
                       )}
                     </div>
+
                   </div>
                 ))}
 

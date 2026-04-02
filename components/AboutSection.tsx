@@ -10,9 +10,9 @@ export default function AboutSection() {
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         
         {/* Image */}
-        <div className="relative w-full h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-lg">
+        <div className="relative w-full h-75 md:h-100 rounded-2xl overflow-hidden shadow-lg">
           <Image
-            src="/about.jpg"
+            src="/one.jpg"
             alt="Lokpanta community"
             fill
             className="object-cover"
